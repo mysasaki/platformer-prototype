@@ -1,12 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
+    private const float SURFACE_RADIUS_CHECK = 0.1f;
+    private const int GROUND_LAYER = 1 << 6;
+
+    
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpFoce;
     [SerializeField] private Rigidbody2D _rigidbody;
-
+    [SerializeField] private Transform _groundCheck;
+    
+    private bool _isGrounded;
     private float _moveInput;
     private PlayerInputActions _inputActions;
     
@@ -40,7 +47,15 @@ public class MovementController : MonoBehaviour
     
     private void Jump(InputAction.CallbackContext obj)
     {
-        _rigidbody.AddForce(Vector2.up * _jumpFoce, ForceMode2D.Impulse);
+        if (_isGrounded)
+        {
+            _rigidbody.AddForce(Vector2.up * _jumpFoce, ForceMode2D.Impulse);
+        }
+    }
+
+    private void Update()
+    {
+        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, SURFACE_RADIUS_CHECK, GROUND_LAYER);
     }
 
     private void FixedUpdate()

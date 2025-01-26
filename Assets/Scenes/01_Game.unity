@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 155163220}
   - component: {fileID: 155163219}
   - component: {fileID: 155163218}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,10 +735,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 953367730179768833, guid: 8d879117c6d7a524384b98a300d5033c, type: 3}
-      propertyPath: _jumpFoce
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3936205500746151193, guid: 8d879117c6d7a524384b98a300d5033c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
