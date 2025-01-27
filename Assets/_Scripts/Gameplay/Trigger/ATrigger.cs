@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Trigger : MonoBehaviour
+public abstract class ATrigger : MonoBehaviour
 {
     [SerializeField] protected ScriptableEvent _triggerEvent;
     

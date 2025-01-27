@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WinTrigger : Trigger
+public class WinTrigger : ATrigger
 {
     private void OnTriggerEnter2D(Collider2D col)
     {

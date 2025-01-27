@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DeathTrigger : Trigger
+public class DeathTrigger : ATrigger
 {
     private void OnTriggerEnter2D(Collider2D col)
     {
