@@ -27,7 +27,8 @@ public class BackgroundExtender : MonoBehaviour
     }
 
     private void Update()
-    {//TODO: optmize
+    {
+        //TODO: optmize
         float cameraX = _camera.transform.position.x;
 
         foreach (Transform part in _backgrounds)
