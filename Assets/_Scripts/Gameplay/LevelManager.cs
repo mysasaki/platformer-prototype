@@ -4,7 +4,7 @@ public class LevelManager : MonoBehaviour
 {
     public enum PlayerState
     {
-        Tutorial, Play, Paused, Dead
+        Tutorial, Play, Paused, Dead, Won
     }
     
     #region Singleton
@@ -27,11 +27,13 @@ public class LevelManager : MonoBehaviour
     #region Events
     //Player events
     public static Event OnPlayerDie = new();
+    public static Event OnPlayerWon = new();
     
     //Game loop events
     public static Event OnStartGame = new(); //Triggered after tutorial ends
     public static Event<bool> OnPauseGame = new();
     public static Event OnGameOver = new();
+    public static Event OnLevelFinish = new();
     #endregion
     
     [Header("Player Data")]
@@ -43,6 +45,7 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         OnPlayerDie.Subscribe(GameOver);
+        OnPlayerWon.Subscribe(LevelFinish);
         OnPauseGame.Subscribe(PauseGame);
     }
 
@@ -88,6 +91,14 @@ public class LevelManager : MonoBehaviour
         _state = PlayerState.Dead;
         OnGameOver.Raise();
     }
+    
+    private void LevelFinish()
+    {
+        if (_state == PlayerState.Won) return;
+
+        _state = PlayerState.Won;
+        OnLevelFinish?.Raise();
+    }
 
     private void PauseGame(bool pause)
     {
@@ -98,6 +109,7 @@ public class LevelManager : MonoBehaviour
     private void OnDisable()
     {
         OnPlayerDie.Unsubscribe(GameOver);
+        OnPlayerWon.Unsubscribe(LevelFinish);
         OnPauseGame.Unsubscribe(PauseGame);
     }
 }

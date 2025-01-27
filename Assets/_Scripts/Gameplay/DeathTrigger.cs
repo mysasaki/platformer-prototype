@@ -6,8 +6,8 @@ public class DeathTrigger : Trigger
     {
         if (col.CompareTag("Player") && LevelManager.Instance.State != LevelManager.PlayerState.Dead)
         {
-            Debug.Log("AAAAA");
             if (_isTriggered) return;
+            Debug.Log("Game over");
 
             _isTriggered = true;
             _triggerEvent.Raise();
