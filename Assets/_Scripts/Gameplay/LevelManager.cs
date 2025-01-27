@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public enum PlayerState
+    public enum GameState
     {
         Tutorial, Play, Paused, Dead, Won
     }
@@ -39,8 +39,8 @@ public class LevelManager : MonoBehaviour
     [Header("Player Data")]
     [SerializeField] private ScriptableInt _score;
 
-    private PlayerState _state;
-    public PlayerState State => _state;
+    private GameState _state;
+    public GameState State => _state;
 
     private void OnEnable()
     {
@@ -76,9 +76,9 @@ public class LevelManager : MonoBehaviour
 
     private void StartGame()
     {
-        if (_state != PlayerState.Tutorial) return;
+        if (_state != GameState.Tutorial) return;
 
-        _state = PlayerState.Play;
+        _state = GameState.Play;
         
         OnStartGame.Raise();
         PauseGame(false);
@@ -86,24 +86,24 @@ public class LevelManager : MonoBehaviour
 
     private void GameOver()
     {
-        if (_state == PlayerState.Dead) return;
+        if (_state == GameState.Dead) return;
 
-        _state = PlayerState.Dead;
+        _state = GameState.Dead;
         OnGameOver.Raise();
     }
     
     private void LevelFinish()
     {
-        if (_state == PlayerState.Won) return;
+        if (_state == GameState.Won) return;
 
-        _state = PlayerState.Won;
+        _state = GameState.Won;
         OnLevelFinish?.Raise();
     }
 
     private void PauseGame(bool pause)
     {
         Time.timeScale = pause ? 0 : 1;
-        _state = pause ? PlayerState.Paused : PlayerState.Play;
+        _state = pause ? GameState.Paused : GameState.Play;
     }
 
     private void OnDisable()

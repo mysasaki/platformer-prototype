@@ -12,7 +12,7 @@ public class ScoreTrigger : ATrigger
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Player") && LevelManager.Instance.State == LevelManager.PlayerState.Play)
+        if (col.CompareTag("Player") && LevelManager.Instance.State == LevelManager.GameState.Play)
         {
             if (_isTriggered) return;
 

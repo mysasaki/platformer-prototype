@@ -2,11 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private const float SURFACE_RADIUS_CHECK = 0.1f;
     private const int GROUND_LAYER = 1 << 6;
 
+    public event Action OnJump;
     
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpFoce;
@@ -16,6 +17,8 @@ public class PlayerMovementController : MonoBehaviour
     private bool _isGrounded;
     private float _moveInput;
     private PlayerInputActions _inputActions;
+
+    public float MoveSpeed => _rigidbody.velocity.x;
     
     private void Awake()
     {
@@ -43,12 +46,23 @@ public class PlayerMovementController : MonoBehaviour
     private void Move(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>().x;
+
+        if (_moveInput > 0)
+        {
+            transform.localScale = new(1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new(-1, 1, 1);
+        }
     }
     
     private void Jump(InputAction.CallbackContext obj)
     {
         if (_isGrounded)
         {
+            OnJump?.Invoke();
+
             _rigidbody.AddForce(Vector2.up * _jumpFoce, ForceMode2D.Impulse);
         }
     }
