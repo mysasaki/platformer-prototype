@@ -10,9 +10,10 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnJump;
     
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _jumpFoce;
+    [SerializeField] private float _jumpForce;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Transform _groundCheck;
+    [SerializeField] private ScriptableEvent _jumpSFX;
     
     private bool _isGrounded;
     private float _moveInput;
@@ -58,8 +59,9 @@ public class PlayerMovement : MonoBehaviour
         if (_isGrounded)
         {
             OnJump?.Invoke();
-
-            _rigidbody.AddForce(Vector2.up * _jumpFoce, ForceMode2D.Impulse);
+            
+            _jumpSFX.Raise();
+            _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
 

@@ -4,7 +4,6 @@ public class ScoreTrigger : ATrigger
 {
     [Header("Data")]
     [SerializeField] private ScriptableInt _score;
-    [SerializeField] private ScriptableInt _bestScore;
     
     [Header("Unique configuration")]
     [SerializeField] private bool _destroyOnCollide;
@@ -31,7 +30,5 @@ public class ScoreTrigger : ATrigger
     private void IncreaseScore()
     {
         _score.Value += _scoreIncrease;
-
-        if (_bestScore.Value < _score.Value) _bestScore.Value = _score.Value;
     }
 }

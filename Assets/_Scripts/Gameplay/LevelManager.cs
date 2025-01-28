@@ -95,6 +95,7 @@ public class LevelManager : MonoBehaviour
         if (_state == GameState.Dead) return;
 
         _state = GameState.Dead;
+        
         OnGameOver.Raise();
     }
     
@@ -103,6 +104,7 @@ public class LevelManager : MonoBehaviour
         if (_state == GameState.Won) return;
 
         _state = GameState.Won;
+        
         OnLevelFinish?.Raise();
     }
 
