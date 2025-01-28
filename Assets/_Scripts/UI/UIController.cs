@@ -103,6 +103,8 @@ public class UIController : MonoBehaviour
         _onButtonPressed.Raise();
         _triggerFadeOut.Raise();
         LevelManager.OnPauseGame.Raise(false);
+        
+        _pauseButton.gameObject.SetActive(true);
         ShowPopup(false);
     }
 
@@ -138,6 +140,7 @@ public class UIController : MonoBehaviour
 
         _popupTitleText.SetText("Paused");
         _scoreContainer.SetActive(false);
+        _pauseButton.gameObject.SetActive(false);
         
         ShowPopup(true);
     }
@@ -145,7 +148,7 @@ public class UIController : MonoBehaviour
     private void FinishLevel(bool won)
     {
         _triggerFadeInToPause.Raise();
-        _pauseButton.interactable = false;
+        _pauseButton.gameObject.SetActive(false);
 
         var text = won ? "Congratulations" : "Game Over";
         

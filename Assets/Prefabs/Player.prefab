@@ -259,9 +259,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 5
-  _jumpFoce: 5
+  _jumpForce: 5
   _rigidbody: {fileID: 3158077901216577444}
   _groundCheck: {fileID: 6530152227534045127}
+  _jumpEvent: {fileID: 11400000, guid: 7beb198abffa5374abb96db6512724d7, type: 2}
 --- !u!114 &3096006352997346112
 MonoBehaviour:
   m_ObjectHideFlags: 0
