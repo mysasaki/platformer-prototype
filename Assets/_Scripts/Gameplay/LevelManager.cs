@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LevelManager : MonoBehaviour
 {
@@ -38,40 +39,45 @@ public class LevelManager : MonoBehaviour
     
     [Header("Player Data")]
     [SerializeField] private ScriptableInt _score;
-
+    
+    private PlayerInputActions _inputActions;
     private GameState _state;
     public GameState State => _state;
+    public PlayerInputActions InputActions => _inputActions;
 
     private void OnEnable()
     {
         OnPlayerDie.Subscribe(GameOver);
         OnPlayerWon.Subscribe(LevelFinish);
         OnPauseGame.Subscribe(PauseGame);
+        
+        _inputActions = new();
+        _inputActions.Enable();
+        
+        _inputActions.Player.Jump.performed += HandleInput;
+    }
+    
+    private void OnDisable()
+    {
+        OnPlayerDie.Unsubscribe(GameOver);
+        OnPlayerWon.Unsubscribe(LevelFinish);
+        OnPauseGame.Unsubscribe(PauseGame);
+        
+        _inputActions.Disable();
     }
 
     private void Start()
     {
-        StartGame();
-        // SetupInput();
-        //
-        // _state = PlayerState.Tutorial;
-        // _score.Value = 0;
-        // Time.timeScale = 0;
+        _state = GameState.Tutorial;
+        _score.Value = 0;
+        Time.timeScale = 0;
     }
-
-    private void SetupInput()
+    
+    private void HandleInput(InputAction.CallbackContext _)
     {
-        // _jumpButton = InputManager.Instance.GetButtonById("JumpButton");
-        // if (_jumpButton != null) 
-        // {
-        //     _jumpButton.OnButtonReleasedEvent.Subscribe(StartGame);
-        // }
-        //
-        // _jumpMouseButton = InputManager.Instance.GetMouseButtonById("MouseJumpButton");
-        // if (_jumpMouseButton != null)
-        // {
-        //     _jumpMouseButton.OnButtonReleasedEvent.Subscribe(StartGame);
-        // }
+        _inputActions.Player.Jump.performed -= HandleInput;
+
+        StartGame();
     }
 
     private void StartGame()
@@ -104,12 +110,5 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = pause ? 0 : 1;
         _state = pause ? GameState.Paused : GameState.Play;
-    }
-
-    private void OnDisable()
-    {
-        OnPlayerDie.Unsubscribe(GameOver);
-        OnPlayerWon.Unsubscribe(LevelFinish);
-        OnPauseGame.Unsubscribe(PauseGame);
     }
 }

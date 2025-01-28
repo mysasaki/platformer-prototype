@@ -19,23 +19,14 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInputActions _inputActions;
 
     public float MoveSpeed => _rigidbody.velocity.x;
+    private bool CanMove => LevelManager.Instance.State == LevelManager.GameState.Play;
     
-    private void Awake()
+    private void OnEnable()
     {
-        _inputActions = new();
+        _inputActions = LevelManager.Instance.InputActions;
         _inputActions.Player.Move.performed += Move;
         _inputActions.Player.Move.canceled += Stop;
         _inputActions.Player.Jump.performed += Jump;
-    }
-
-    private void OnEnable()
-    {
-        _inputActions.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _inputActions.Disable();
     }
 
     private void Stop(InputAction.CallbackContext context)
@@ -45,6 +36,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(InputAction.CallbackContext context)
     {
+        if (!CanMove)
+        {
+            return;
+        }
+        
         _moveInput = context.ReadValue<Vector2>().x;
 
         if (_moveInput > 0)
@@ -69,11 +65,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!CanMove)
+        {
+            return;
+        }
+        
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, SURFACE_RADIUS_CHECK, GROUND_LAYER);
     }
 
     private void FixedUpdate()
     {
+        if (!CanMove)
+        {
+            return;
+        }
+        
         _rigidbody.velocity = new Vector2(_moveInput * _moveSpeed, _rigidbody.velocity.y);
     }
 }
