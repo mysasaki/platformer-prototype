@@ -1,3 +1,5 @@
+using Unity.Services.Analytics;
+using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,7 +49,7 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         OnPlayerDie.Subscribe(GameOver);
-        OnPlayerWon.Subscribe(LevelFinish);
+        OnPlayerWon.Subscribe(GameWon);
         OnPauseGame.Subscribe(PauseGame);
         
         _inputActions = new();
@@ -59,7 +61,7 @@ public class LevelManager : MonoBehaviour
     private void OnDisable()
     {
         OnPlayerDie.Unsubscribe(GameOver);
-        OnPlayerWon.Unsubscribe(LevelFinish);
+        OnPlayerWon.Unsubscribe(GameWon);
         OnPauseGame.Unsubscribe(PauseGame);
         
         _inputActions.Disable();
@@ -94,16 +96,18 @@ public class LevelManager : MonoBehaviour
         if (_state == GameState.Dead) return;
 
         _state = GameState.Dead;
-        
+
+        SendAnalytics(false);
         OnLevelFinish.Raise(false);
     }
     
-    private void LevelFinish()
+    private void GameWon()
     {
         if (_state == GameState.Won) return;
 
         _state = GameState.Won;
         
+        SendAnalytics(true);
         OnLevelFinish?.Raise(true);
     }
 
@@ -111,5 +115,10 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = pause ? 0 : 1;
         _state = pause ? GameState.Paused : GameState.Play;
+    }
+
+    private void SendAnalytics(bool gameWon)
+    {
+        AnalyticsService.Instance.RecordEvent(new DJEvent("game_finished", gameWon, _score.Value));
     }
 }

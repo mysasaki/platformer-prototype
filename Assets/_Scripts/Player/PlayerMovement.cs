@@ -67,6 +67,11 @@ public class PlayerMovement : MonoBehaviour
     
     private void Jump(InputAction.CallbackContext obj)
     {
+        if (!CanMove)
+        {
+            return;
+        }
+        
         if (_isGrounded)
         {
             OnJump?.Invoke();
@@ -78,21 +83,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!CanMove)
-        {
-            return;
-        }
-        
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, SURFACE_RADIUS_CHECK, GROUND_LAYER);
     }
 
     private void FixedUpdate()
     {
-        if (!CanMove)
-        {
-            return;
-        }
-        
         _rigidbody.velocity = new Vector2(_moveInput * _moveSpeed, _rigidbody.velocity.y);
     }
 

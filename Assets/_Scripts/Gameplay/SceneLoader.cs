@@ -16,7 +16,10 @@ public class SceneLoader : MonoBehaviour
 
     private void Update()
     {
-        if (!_loadScene) return;
+        if (!_loadScene)
+        {
+            return;
+        }
         
         _currentTime += Time.unscaledDeltaTime;
 

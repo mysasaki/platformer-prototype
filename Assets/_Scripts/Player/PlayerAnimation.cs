@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
@@ -21,7 +20,6 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Jump()
     {
-        Debug.Log("Jump");
         _animator.SetTrigger(JUMP_KEY);
     }
 

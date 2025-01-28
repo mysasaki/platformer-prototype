@@ -27,7 +27,10 @@ public class FadeEffect : MonoBehaviour
 
     private void Update()
     {
-        if (!ShouldFade()) return;
+        if (!ShouldFade())
+        {
+            return;
+        }
         
         _currentAlpha = Mathf.MoveTowards(_currentAlpha, _fadeToAlpha, Time.unscaledDeltaTime / _duration);
         _color.a = _currentAlpha;

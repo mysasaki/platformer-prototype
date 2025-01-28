@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BackgroundExtender : MonoBehaviour
 {
-    private Camera _camera;
+    private Transform _cameraTransform;
     private float _spriteWidth;
     private Transform[] _backgrounds;
 
     private void Start()
     {
-        _camera = Camera.main;
+        _cameraTransform = Camera.main.transform;
         
         var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         
@@ -28,8 +28,7 @@ public class BackgroundExtender : MonoBehaviour
 
     private void Update()
     {
-        //TODO: optmize
-        float cameraX = _camera.transform.position.x;
+        float cameraX = _cameraTransform.position.x;
 
         foreach (Transform part in _backgrounds)
         {
@@ -48,6 +47,9 @@ public class BackgroundExtender : MonoBehaviour
 
     private void RepositionPart(Transform part, float offset)
     {
-        part.position = new Vector3(part.position.x + offset, part.position.y, part.position.z);
+        var position = part.position;
+        
+        position = new Vector3(position.x + offset, position.y, position.z);
+        part.position = position;
     }
 }
