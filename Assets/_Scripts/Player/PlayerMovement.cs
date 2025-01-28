@@ -28,6 +28,17 @@ public class PlayerMovement : MonoBehaviour
         _inputActions.Player.Move.performed += Move;
         _inputActions.Player.Move.canceled += Stop;
         _inputActions.Player.Jump.performed += Jump;
+
+        LevelManager.OnLevelFinish.Subscribe(HandleLevelFinish);
+    }
+
+    private void OnDisable()
+    {
+        _inputActions.Player.Move.performed -= Move;
+        _inputActions.Player.Move.canceled -= Stop;
+        _inputActions.Player.Jump.performed -= Jump;
+
+        LevelManager.OnLevelFinish.Unsubscribe(HandleLevelFinish);
     }
 
     private void Stop(InputAction.CallbackContext context)
@@ -83,5 +94,14 @@ public class PlayerMovement : MonoBehaviour
         }
         
         _rigidbody.velocity = new Vector2(_moveInput * _moveSpeed, _rigidbody.velocity.y);
+    }
+
+    private void HandleLevelFinish(bool gameWon)
+    {
+        if (gameWon)
+        {
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.angularVelocity = 0f;
+        }
     }
 }
