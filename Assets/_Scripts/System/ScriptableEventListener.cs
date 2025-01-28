@@ -6,7 +6,7 @@ public class ScriptableEventListener : MonoBehaviour
     [SerializeField] private ScriptableEvent _scriptableEvent;
     [SerializeField] private UnityEvent _response;
 
-    private void Start()
+    private void OnEnable()
     {
         _scriptableEvent.Subscribe(OnEventRaised);
     }

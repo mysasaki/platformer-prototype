@@ -33,8 +33,7 @@ public class LevelManager : MonoBehaviour
     //Game loop events
     public static Event OnStartGame = new(); //Triggered after tutorial ends
     public static Event<bool> OnPauseGame = new();
-    public static Event OnGameOver = new();
-    public static Event OnLevelFinish = new();
+    public static Event<bool> OnLevelFinish = new();
     #endregion
     
     [Header("Player Data")]
@@ -96,7 +95,7 @@ public class LevelManager : MonoBehaviour
 
         _state = GameState.Dead;
         
-        OnGameOver.Raise();
+        OnLevelFinish.Raise(false);
     }
     
     private void LevelFinish()
@@ -105,7 +104,7 @@ public class LevelManager : MonoBehaviour
 
         _state = GameState.Won;
         
-        OnLevelFinish?.Raise();
+        OnLevelFinish?.Raise(true);
     }
 
     private void PauseGame(bool pause)

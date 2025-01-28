@@ -8,9 +8,10 @@ public class WinTrigger : ATrigger
         {
             if (_isTriggered) return;
 
-            Debug.Log("Won game");
             _isTriggered = true;
             _triggerEvent.Raise();
+            
+            LevelManager.OnPlayerWon.Raise();
         }
     }
 }

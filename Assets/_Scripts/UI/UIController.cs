@@ -47,7 +47,7 @@ public class UIController : MonoBehaviour
 
         _score.OnValueChanged += UpdateScore;
         
-        LevelManager.OnGameOver.Subscribe(GameOver);
+        LevelManager.OnLevelFinish.Subscribe(FinishLevel);
         LevelManager.OnStartGame.Subscribe(StartGame);
         
         _scoreText.SetText("0");
@@ -56,6 +56,15 @@ public class UIController : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        LevelManager.OnLevelFinish.Unsubscribe(FinishLevel);
+        LevelManager.OnStartGame.Unsubscribe(StartGame);
+
+        _inputActions.UI.Pause.performed -= TogglePause;
+        _score.OnValueChanged -= UpdateScore;
+    }
+    
     private void SetupInput()
     {
         _inputActions = LevelManager.Instance.InputActions;
@@ -133,11 +142,14 @@ public class UIController : MonoBehaviour
         ShowPopup(true);
     }
 
-    private void GameOver()
+    private void FinishLevel(bool won)
     {
         _triggerFadeInToPause.Raise();
         _pauseButton.interactable = false;
-        _popupTitleText.SetText("Game Over");
+
+        var text = won ? "Congratulations" : "Game Over";
+        
+        _popupTitleText.SetText(text);
         _scoreContainer.SetActive(true);
         _resumeButton.gameObject.SetActive(false);
         
@@ -152,13 +164,4 @@ public class UIController : MonoBehaviour
     }
 
     #endregion
-
-    private void OnDisable()
-    {
-        LevelManager.OnGameOver.Unsubscribe(GameOver);
-        LevelManager.OnStartGame.Unsubscribe(StartGame);
-
-        _inputActions.UI.Pause.performed -= TogglePause;
-        _score.OnValueChanged -= UpdateScore;
-    }
 }
