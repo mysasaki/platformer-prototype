@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    [Header("Tutorial")] [SerializeField] private GameObject _tutorialContainer;
+    [Header("Tutorial")] 
+    [SerializeField] private GameObject _tutorialContainer;
+    [SerializeField] private TMP_Text _tutorialText;
     
     [Header("Popup")] 
     [SerializeField] private Animator _popupWindow;
@@ -129,9 +131,21 @@ public class UIController : MonoBehaviour
     
     private void ShowTutorial(bool show)
     {
+        SetupTutorialText();
         _tutorialContainer.SetActive(show);
         _scoreText.gameObject.SetActive(!show);
         _pauseButton.gameObject.SetActive(!show);
+    }
+
+    private void SetupTutorialText()
+    {
+        if (Application.isEditor)
+        {
+            _tutorialText.text = "Move with A and D\nJump with 'space'";
+            return;
+        }
+
+        _tutorialText.text = "Move with joystic\nJump with tap";
     }
 
     private void Pause()
